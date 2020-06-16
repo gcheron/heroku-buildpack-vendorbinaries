@@ -17,8 +17,20 @@ while read url; do
   if [[ $url = "https://drive.google.com/file/"* ]];
   then
     # handle only zip from google drive
+
+    suf=""
+    arr=($url)
+    if [ ${#arr[@]} -eq 2 ];
+    then
+       # extract in specified folder
+       url=${arr[0]}
+       outdir=${arr[1]}
+       mkdir -p $outdir
+       suf="-d $outdir"
+    fi
+
     $gd $url tmp.zip
-    unzip -o tmp.zip
+    unzip -o tmp.zip $suf
     rm tmp.zip
   else
     extension="${url##*.}" # http://stackoverflow.com/q/965053
