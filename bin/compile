@@ -1,10 +1,4 @@
 #!/bin/bash
-
-if [ ! -f "gdown.pl" ]; then
-   wget https://raw.githubusercontent.com/circulosmeos/gdown.pl/master/gdown.pl
-   chmod +x gdown.pl
-fi
-
 echo "-----> Found a .vendor_urls file"
 
 # Bail early but noisily
@@ -13,6 +7,7 @@ if [ ! -s $1/.vendor_urls ]; then
   exit 0
 fi
 
+gd=$(pwd)/gdown.pl
 cd $1
 
 while read url; do
@@ -22,7 +17,7 @@ while read url; do
   if [[ $url = "https://drive.google.com/file/"* ]];
   then
     # handle only zip from google drive
-    ./gdown.pl $url tmp.zip
+    $gd $url tmp.zip
     unzip -o tmp.zip
     rm tmp.zip
   else
